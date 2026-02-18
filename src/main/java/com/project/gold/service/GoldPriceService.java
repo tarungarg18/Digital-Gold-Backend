@@ -1,0 +1,21 @@
+package com.project.gold.service;
+
+import com.project.gold.client.GoldPriceClient;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class GoldPriceService {
+    
+    private final GoldPriceClient goldPriceClient;
+    
+    public Double getCurrentGoldPrice() {
+        log.info("Fetching current gold price");
+        Double price = goldPriceClient.fetchGoldPrice();
+        log.info("Current gold price: ₹{} per gram", price);
+        return price;
+    }
+}

@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: digital-gold-backend
+  
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/digital_gold}
+      database: digital_gold
+
+external:
+  apis:
+    gold-price:
+      url: ${GOLD_PRICE_API_URL:https://api.metalpriceapi.com/v1/latest}
+      timeout: 10000
+      cache-enabled: false
+      cache-duration-seconds: 60
+      api-key: ${GOLD_PRICE_API_KEY:d979cde67355791c35639da6277669de}
+    
+    payment-gateway:
+      url: ${PAYMENT_GATEWAY_API_URL:https://api.razorpay.com/v1/payments}
+      timeout: 10000
+      api-key: ${RAZORPAY_API_KEY:}
+      api-secret: ${RAZORPAY_API_SECRET:}
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: INFO
+    com.project.gold: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level [%X{traceId}] %logger{36} - %msg%n"
+  file:
+    name: logs/digital-gold.log
