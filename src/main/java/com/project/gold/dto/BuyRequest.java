@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BuyRequest {
-    
+
     @NotBlank(message = "UserId is required")
     private String userId;
-    
+
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "1.0", message = "Amount must be at least ₹1")
     private Double amount;

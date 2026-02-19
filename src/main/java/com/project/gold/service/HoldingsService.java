@@ -12,32 +12,32 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class HoldingsService {
-    
+
     private final HoldingsRepository holdingsRepository;
-    
+
     public void updateHoldings(String userId, Double grams, Double goldPrice, Double amount) {
-        log.info("Updating holdings for userId: {}, grams: {}, price: ₹{}", 
+        log.info("Updating holdings for userId: {}, grams: {}, price: ₹{}",
                 userId, grams, goldPrice);
-        
+
         Optional<Holdings> existingHoldingsOpt = holdingsRepository.findByUserId(userId);
-        
+
         Holdings holdings;
         if (existingHoldingsOpt.isPresent()) {
             holdings = existingHoldingsOpt.get();
-            
+
             Double existingGrams = holdings.getTotalGrams() != null ? holdings.getTotalGrams() : 0.0;
             Double existingInvested = holdings.getTotalInvestedAmount() != null ? holdings.getTotalInvestedAmount() : 0.0;
-            
+
             Double totalGrams = existingGrams + grams;
             Double totalInvested = existingInvested + amount;
-            
+
             Double newAvgPrice = totalGrams > 0 ? totalInvested / totalGrams : 0.0;
-            
+
             holdings.setTotalGrams(totalGrams);
             holdings.setTotalInvestedAmount(totalInvested);
             holdings.setAvgBuyPrice(newAvgPrice);
-            
-            log.info("Updated existing holdings. New totalGrams: {}, new avgPrice: ₹{}", 
+
+            log.info("Updated existing holdings. New totalGrams: {}, new avgPrice: ₹{}",
                     totalGrams, newAvgPrice);
         } else {
             holdings = Holdings.builder()
@@ -46,15 +46,15 @@ public class HoldingsService {
                     .avgBuyPrice(goldPrice)
                     .totalInvestedAmount(amount)
                     .build();
-            
-            log.info("Created new holdings. TotalGrams: {}, avgPrice: ₹{}", 
+
+            log.info("Created new holdings. TotalGrams: {}, avgPrice: ₹{}",
                     grams, goldPrice);
         }
-        
+
         holdingsRepository.save(holdings);
         log.info("Holdings updated successfully for userId: {}", userId);
     }
-    
+
     public Holdings getHoldingsByUserId(String userId) {
         log.info("Fetching holdings for userId: {}", userId);
         return holdingsRepository.findByUserId(userId)

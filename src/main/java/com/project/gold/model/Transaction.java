@@ -15,23 +15,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
-    
+
     @Id
     private String id;
-    
     private String userId;
-    
     private Double amount;
-    
     private Double goldPrice;
-    
     private Double grams;
-    
     private String paymentId;
-    
-    @Builder.Default
-    private String status = "PENDING"; // SUCCESS, FAILED, PENDING
-    
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String status;
+    private LocalDateTime createdAt;
 }

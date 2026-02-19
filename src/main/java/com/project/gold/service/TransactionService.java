@@ -13,14 +13,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class TransactionService {
-    
+
     private final TransactionRepository transactionRepository;
-    
-    public Transaction saveTransaction(String userId, Double amount, Double goldPrice, 
+
+    public Transaction saveTransaction(String userId, Double amount, Double goldPrice,
                                       Double grams, String paymentId, String status) {
-        log.info("Saving transaction for userId: {}, amount: ₹{}, grams: {}", 
+        log.info("Saving transaction for userId: {}, amount: ₹{}, grams: {}",
                 userId, amount, grams);
-        
+
         Transaction transaction = Transaction.builder()
                 .userId(userId)
                 .amount(amount)
@@ -30,13 +30,13 @@ public class TransactionService {
                 .status(status)
                 .createdAt(LocalDateTime.now())
                 .build();
-        
+
         Transaction savedTransaction = transactionRepository.save(transaction);
         log.info("Transaction saved successfully. TransactionId: {}", savedTransaction.getId());
-        
+
         return savedTransaction;
     }
-    
+
     public List<Transaction> getTransactionsByUserId(String userId) {
         log.info("Fetching transactions for userId: {}", userId);
         List<Transaction> transactions = transactionRepository.findByUserIdOrderByCreatedAtDesc(userId);

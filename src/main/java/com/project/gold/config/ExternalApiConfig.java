@@ -8,10 +8,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "external.apis")
 public class ExternalApiConfig {
-    
+
     private GoldPrice goldPrice = new GoldPrice();
     private PaymentGateway paymentGateway = new PaymentGateway();
-    
+
     @Data
     public static class GoldPrice {
         private String url;
@@ -20,7 +20,7 @@ public class ExternalApiConfig {
         private Integer cacheDurationSeconds;
         private String apiKey;
     }
-    
+
     @Data
     public static class PaymentGateway {
         private String url;

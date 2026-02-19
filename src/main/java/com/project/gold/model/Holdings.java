@@ -13,18 +13,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Holdings {
-    
+
     @Id
     private String id;
-    
     private String userId;
-    
-    @Builder.Default
-    private Double totalGrams = 0.0;
-    
-    @Builder.Default
-    private Double avgBuyPrice = 0.0;
-    
-    @Builder.Default
-    private Double totalInvestedAmount = 0.0;
+    private Double totalGrams;
+    private Double avgBuyPrice;
+    private Double totalInvestedAmount;
 }

@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class PortfolioService {
-    
+
     private final HoldingsService holdingsService;
     private final GoldPriceService goldPriceService;
-    
+
     public HoldingsResponse getHoldings(String userId) {
         log.info("Calculating portfolio for userId: {}", userId);
-        
+
         Holdings holdings = holdingsService.getHoldingsByUserId(userId);
-        
+
         if (holdings.getTotalGrams() == null || holdings.getTotalGrams() == 0) {
             log.info("No holdings found for userId: {}", userId);
             return HoldingsResponse.builder()
@@ -31,26 +31,26 @@ public class PortfolioService {
                     .avgBuyPrice(0.0)
                     .build();
         }
-        
+
         Double currentPrice = goldPriceService.getCurrentGoldPrice();
-        
+
         if (currentPrice == null) {
             log.warn("Current gold price is null, using fallback");
             currentPrice = 6000.0;
         }
-        
+
         Double currentValue = holdings.getTotalGrams() * currentPrice;
-        
-        Double investedAmount = holdings.getTotalInvestedAmount() != null ? 
+
+        Double investedAmount = holdings.getTotalInvestedAmount() != null ?
                 holdings.getTotalInvestedAmount() : 0.0;
-        
+
         Double profitLossAmount = currentValue - investedAmount;
-        Double profitLossPercent = investedAmount > 0 ? 
+        Double profitLossPercent = investedAmount > 0 ?
                 ((profitLossAmount / investedAmount) * 100) : 0.0;
-        
-        log.info("Portfolio calculated. TotalGrams: {}, CurrentValue: ₹{}, ProfitLoss: {}%", 
+
+        log.info("Portfolio calculated. TotalGrams: {}, CurrentValue: ₹{}, ProfitLoss: {}%",
                 holdings.getTotalGrams(), currentValue, profitLossPercent);
-        
+
         return HoldingsResponse.builder()
                 .userId(userId)
                 .totalGrams(holdings.getTotalGrams())
